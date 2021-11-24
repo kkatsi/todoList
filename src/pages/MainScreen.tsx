@@ -1,21 +1,23 @@
 import React from "react";
 import ListItem from "../components/ListItem";
 import ThemeToggle from "../components/ThemeToggle";
-import useDarkMode from "../hooks/useDarkMode";
+import { Link } from "react-router-dom";
 
-export default function MainScreen() {
-  const [darkMode, setDarkMode] = useDarkMode();
+interface Props {
+  darkMode: boolean;
+  handleModeChange: () => void;
+}
 
-  function handleModeChange(): void {
-    setDarkMode(!darkMode);
-  }
-
+export default function MainScreen({ darkMode, handleModeChange }: Props) {
   return (
     <div className="dark:bg-gray-800 min-h-screen flex-col flex align-middle justify-center">
       <ThemeToggle changeMode={handleModeChange} />
       <br />
       <br />
-      <ListItem />
+      <ListItem dark={darkMode} />
+      <br />
+      <br />
+      <Link to="/about">About</Link>
     </div>
   );
 }
