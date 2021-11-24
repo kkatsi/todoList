@@ -1,5 +1,5 @@
 import React from "react";
-import CheckBox from "../components/CheckBox";
+import ListItem from "../components/ListItem";
 import ThemeToggle from "../components/ThemeToggle";
 import useDarkMode from "../hooks/useDarkMode";
 
@@ -15,7 +15,7 @@ export default function MainScreen() {
       <ThemeToggle changeMode={handleModeChange} />
       <br />
       <br />
-      <CheckBox />
+      <ListItem />
     </div>
   );
 }

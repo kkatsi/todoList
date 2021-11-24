@@ -14,7 +14,7 @@ const StyledSwitch = styled(SwitchPrimitive.Root)`
     box-shadow: 0 0 0 1px black;
   }
   &[data-state="checked"] {
-    background-color: ${tw`bg-blue-500`};
+    background-color: ${tw`bg-indigo-500`};
   }
   ${tw`mx-2 bg-gray-400 rounded-full relative shadow-sm`}
 `;
