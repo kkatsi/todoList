@@ -40,7 +40,7 @@ const CheckMark = () => (
       stroke={
         localStorage.getItem("dark-theme") === "true" ? "white" : "#D1D5DB"
       }
-      strokeWidth="3px"
+      strokeWidth="4px"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeDasharray="94"
