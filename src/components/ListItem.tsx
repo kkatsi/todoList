@@ -9,10 +9,13 @@ interface Props {
   dark: boolean;
   bgColor: string;
   subject: string;
+  isDone: boolean;
   isEditing: boolean;
+  onToggleItem: () => void;
   onChangeSubject: (subject: string) => void;
   onFinishEditing: () => void;
   onPressLabel: () => void;
+  onRemove: () => void;
 }
 
 const StrikeThrought = styled.div`
@@ -48,16 +51,18 @@ export default function ListItem({
   dark,
   bgColor,
   subject,
+  isDone,
   isEditing,
+  onToggleItem,
   onChangeSubject,
   onFinishEditing,
   onPressLabel,
+  onRemove,
 }: Props) {
-  const [done, setDone] = useState(false);
+  // const [isDone, setisDone] = useState(false);
   const [textColorProgress, setTextColorProgress] = useState("white");
   const [animationEnded, setAnimationEnded] = useState(false);
-  const [width, setWidth] = useState("100%");
-  const [height, setHeight] = useState("40px");
+  const [x, setX] = useState("0");
   const [opacity, setOpacity] = useState(1);
 
   const item = useRef<HTMLDivElement | null>(null);
@@ -65,15 +70,15 @@ export default function ListItem({
   function handleDragEnd(offset: number) {
     const limit = 230;
     if (offset >= limit) {
-      setWidth("0px");
-      setHeight("0px");
+      setX("-100%");
+      // setHeight("0px");
       setOpacity(0);
     }
   }
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
-    if (done && animationEnded) {
+    if (isDone && animationEnded) {
       timeout = setTimeout(() => {
         setTextColorProgress(dark ? "gray" : "lightgray");
       }, 600);
@@ -83,23 +88,22 @@ export default function ListItem({
     return () => {
       clearTimeout(timeout);
     };
-  }, [done, animationEnded, dark]);
+  }, [isDone, animationEnded, dark]);
 
   useEffect(() => {
-    if (done) setTextColorProgress(dark ? "gray" : "lightgray");
-  }, [dark, done]);
+    if (isDone) setTextColorProgress(dark ? "gray" : "lightgray");
+  }, [dark, isDone]);
 
   useEffect(() => {
-    if (width === "0px") {
+    if (x === "-100%") {
       setTimeout(() => {
-        item.current?.remove();
+        onPressLabel();
       }, 300);
     }
-  }, [width]);
+  }, [x, onPressLabel]);
 
   const handleSubjectChange = useCallback(
     (e) => {
-      console.log(e.target.value);
       onChangeSubject && onChangeSubject(e.target.value);
     },
     [onChangeSubject]
@@ -114,9 +118,10 @@ export default function ListItem({
     <ListItemContainer
       ref={item}
       style={{
-        width: width,
-        height: height,
+        width: "100%",
+        height: "40px",
         opacity: opacity,
+        transform: `translateX(${x})`,
         transition: "all 1s",
       }}
     >
@@ -132,16 +137,16 @@ export default function ListItem({
         onDragEnd={(event, info) => handleDragEnd(Math.abs(info.offset.x))}
       >
         <div
-          onClick={() => setDone(!done)}
+          onClick={onToggleItem}
           className="mr-2"
           style={{ width: "23px", height: "23px" }}
         >
-          <Check isDone={done} />
+          <Check isDone={isDone} />
         </div>
         {!isEditing && (
           <motion.label
             animate={{
-              x: done ? [0, 6, 0] : 0,
+              x: isDone ? [0, 6, 0] : 0,
               transition: {
                 duration: 0.3,
               },
@@ -155,6 +160,7 @@ export default function ListItem({
               paddingRight: ".3rem",
               lineHeight: "20px",
               fontSize: "1.1rem",
+              minWidth: "300px",
             }}
             onAnimationComplete={() => {
               setAnimationEnded(true);
@@ -166,7 +172,7 @@ export default function ListItem({
             {subject}
             <StrikeThrought
               style={{
-                width: done ? "100%" : 0,
+                width: isDone ? "100%" : 0,
                 backgroundColor: textColorProgress,
               }}
             />

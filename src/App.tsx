@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import MainScreen from "./pages/MainScreen";
 import About from "./pages/About";
 import { Routes, Route } from "react-router-dom";
@@ -10,25 +10,19 @@ import Header from "./components/Header";
 function App() {
   const [darkMode, setDarkMode] = useDarkMode();
   const [openMenu, setOpenMenu] = useState(false);
-  const [bgColorClass, setBgColor] = useState("bg-white");
-  function handleModeChange(): void {
-    setDarkMode(!darkMode);
-  }
 
-  useEffect(() => {
-    if (darkMode) {
-      if (openMenu) setBgColor("bg-gray-800");
-      else setBgColor("bg-gray-900");
-    } else {
-      if (openMenu) setBgColor("bg-gray-100");
-      else setBgColor("bg-white");
-    }
+  const bgColorClass = useMemo(() => {
+    if (darkMode && openMenu) return "bg-gray-800";
+    else if (darkMode && !openMenu) return "bg-gray-900";
+    else if (!darkMode && openMenu) return "bg-gray-50";
+    else return "bg-white";
   }, [darkMode, openMenu]);
+
   return (
     <div
-      className="App dark:bg-gray-800"
+      className={bgColorClass}
       style={{
-        transition: "all .5s",
+        transition: "transform .5s",
         transform: openMenu ? "translateX(250px)" : "translateX(0px)",
       }}
     >
@@ -40,7 +34,7 @@ function App() {
           element={
             <MainScreen
               darkMode={darkMode}
-              handleModeChange={handleModeChange}
+              onModeChange={() => setDarkMode(!darkMode)}
               bgColorClass={bgColorClass}
             />
           }

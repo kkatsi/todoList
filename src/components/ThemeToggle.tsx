@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
 import * as SwitchPrimitive from "@radix-ui/react-switch";
 
 interface Props {
-  changeMode: (checked: boolean) => void;
+  onModeChange: () => void;
 }
 
 const StyledSwitch = styled(SwitchPrimitive.Root)`
@@ -33,13 +33,16 @@ const StyledThumb = styled(SwitchPrimitive.Thumb)`
 const Switch = StyledSwitch;
 const SwitchThumb = StyledThumb;
 
-export default function ThemeToggle(props: Props) {
+export default function ThemeToggle({ onModeChange }: Props) {
+  const handleModeChange = useCallback(() => {
+    onModeChange();
+  }, [onModeChange]);
   return (
     <div className="flex dark:text-gray-100">
       <span>Light</span>
       <Switch
         defaultChecked={localStorage.getItem("dark-theme") !== "false" || false}
-        onCheckedChange={props.changeMode}
+        onCheckedChange={handleModeChange}
       >
         <SwitchThumb />
       </Switch>
