@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import ListItem from "../components/ListItem";
 import ThemeToggle from "../components/ThemeToggle";
-import { Link } from "react-router-dom";
 
 interface Props {
   darkMode: boolean;
@@ -14,17 +13,27 @@ export default function MainScreen({
   handleModeChange,
   bgColorClass,
 }: Props) {
+  const [isEditing, setEditing] = useState(false);
+  const [subject, setSubject] = useState<string>("Task Item");
+
   return (
     <div
-      className={`${bgColorClass} min-h-screen flex-col flex align-middle justify-center`}
+      className={`${bgColorClass} min-h-screen flex-col flex justify-center`}
     >
       <ThemeToggle changeMode={handleModeChange} />
       <br />
       <br />
-      <ListItem dark={darkMode} bgColor={bgColorClass} />
-      <br />
-      <br />
-      <Link to="/about">About</Link>
+      {subject && (
+        <ListItem
+          dark={darkMode}
+          bgColor={bgColorClass}
+          isEditing={isEditing}
+          subject={subject}
+          onChangeSubject={setSubject}
+          onPressLabel={() => setEditing(true)}
+          onFinishEditing={() => setEditing(false)}
+        />
+      )}
     </div>
   );
 }

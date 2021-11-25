@@ -35,7 +35,7 @@ const SwitchThumb = StyledThumb;
 
 export default function ThemeToggle(props: Props) {
   return (
-    <div className="flex justify-center dark:text-gray-100">
+    <div className="flex dark:text-gray-100">
       <span>Light</span>
       <Switch
         defaultChecked={localStorage.getItem("dark-theme") !== "false" || false}

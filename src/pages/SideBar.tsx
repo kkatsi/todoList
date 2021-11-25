@@ -8,6 +8,7 @@ interface Props {
 
 const SideBarContainer = styled.nav`
   width: 250px;
+  z-index: 100;
   transform: translateX(-250px);
   ${tw`h-screen dark:bg-blue-900 absolute flex flex-col p-2`};
 `;
