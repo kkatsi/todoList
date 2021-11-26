@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 // import ListItem from "../components/ListItem";
 import PageContent from "../components/PageContent";
 import TaskList from "../components/TaskList";
@@ -6,6 +6,7 @@ import ThemeToggle from "../components/ThemeToggle";
 import { AiOutlinePlus } from "react-icons/ai";
 import styled from "styled-components";
 import tw from "twin.macro";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 interface Props {
   darkMode: boolean;
@@ -13,44 +14,53 @@ interface Props {
   bgColorClass: string;
 }
 
-const initialData = [
-  {
-    id: 4,
-    subject: "Buy movie tickets for Friday",
-    done: false,
-  },
-  {
-    id: 5,
-    subject: "Make a React Native tutorial",
-    done: false,
-  },
-];
-
 const AddItemButton = styled.button`
   all: initial;
-  ${tw`w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center absolute bottom-2 right-2`}
+  ${tw`w-14 h-14 cursor-pointer bg-blue-600 text-white rounded-full flex items-center justify-center absolute bottom-3 right-3`}
 `;
+
+const EmptyListComponent = styled.div`
+  ${tw`w-full text-center p-2`}
+`;
+
+const EmptyListLabel = styled.span`
+  font-size: 1.1rem;
+  ${tw`text-gray-400`}
+`;
+
+interface TaskItemData {
+  id: number;
+  subject: string;
+  done: boolean;
+}
 
 export default function MainScreen({
   darkMode,
   onModeChange,
   bgColorClass,
 }: Props) {
-  const [data, setData] = useState(initialData);
   const [editingItemId, setEditingItemId] = useState<number | null>(null);
+  const [localStorageData, setLocalStorageData] = useLocalStorage<
+    TaskItemData[]
+  >("TaskItems", []);
+  const [data, setData] = useState(localStorageData);
+
+  useEffect(() => {
+    if (localStorageData !== data) setLocalStorageData(data);
+  }, [data, localStorageData, setLocalStorageData]);
 
   const handleAddTaskClick = useCallback(() => {
     const id = Math.floor(Math.random() * 1000000000);
-    setData([
+    setData((prevData) => [
       {
         id: id,
         subject: "",
         done: false,
       },
-      ...data,
+      ...prevData,
     ]);
     setEditingItemId(id);
-  }, [data]);
+  }, []);
 
   const handleToggleTaskItem = useCallback((item) => {
     setData((prevData) => {
@@ -74,9 +84,7 @@ export default function MainScreen({
       return newData;
     });
   }, []);
-  const handleFinishTaskItemEditing = useCallback(() => {
-    setEditingItemId(null);
-  }, []);
+
   const handlePressTaskItemLabel = useCallback((item) => {
     setEditingItemId(item.id);
   }, []);
@@ -87,35 +95,43 @@ export default function MainScreen({
     });
   }, []);
 
+  const handleFinishTaskItemEditing = useCallback(
+    (item) => {
+      if (item.subject === "") handleRemoveTaskItem(item);
+      setEditingItemId(null);
+    },
+    [handleRemoveTaskItem]
+  );
+
   return (
     <PageContent>
       <ThemeToggle onModeChange={onModeChange} />
       <br />
       <br />
-      <TaskList
-        darkMode={darkMode}
-        bgColorClass={bgColorClass}
-        data={data}
-        onToggleItem={handleToggleTaskItem}
-        onChangeSubject={handleChangeTaskItemSubject}
-        onFinishEditing={handleFinishTaskItemEditing}
-        onPressLabel={handlePressTaskItemLabel}
-        onRemoveItem={handleRemoveTaskItem}
-        editingItemId={editingItemId}
-      />
-      {/* {subject && (
-        // <ListItem
-        //   dark={darkMode}
-        //   bgColor={bgColorClass}
-        //   isEditing={isEditing}
-        //   subject={subject}
-        //   onChangeSubject={setSubject}
-        //   onPressLabel={() => setEditing(true)}
-        //   onFinishEditing={() => setEditing(false)}
-        // />
-      )} */}
+      {data.length > 0 && (
+        <TaskList
+          darkMode={darkMode}
+          bgColorClass={bgColorClass}
+          data={data}
+          onToggleItem={handleToggleTaskItem}
+          onChangeSubject={handleChangeTaskItemSubject}
+          onFinishEditing={handleFinishTaskItemEditing}
+          onPressLabel={handlePressTaskItemLabel}
+          onRemoveItem={handleRemoveTaskItem}
+          editingItemId={editingItemId}
+        />
+      )}
+      {data.length === 0 && (
+        <EmptyListComponent>
+          <EmptyListLabel>
+            There are currently no tasks in your list. You can add a new task by
+            clicking the button at bottom right corner.
+          </EmptyListLabel>
+        </EmptyListComponent>
+      )}
+
       <AddItemButton onClick={handleAddTaskClick}>
-        <AiOutlinePlus size={30} />
+        <AiOutlinePlus size={25} />
       </AddItemButton>
     </PageContent>
   );

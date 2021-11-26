@@ -8,7 +8,7 @@ interface Props {
 export default function PageContent({ children }: Props) {
   return (
     <div
-      className={`py-20 px-3 relative mx-auto container min-h-screen flex-col flex justify-center`}
+      className={`py-20 relative mx-auto container min-h-screen flex-col flex justify-center`}
     >
       {children}
     </div>

@@ -8,7 +8,7 @@ interface Props {
 
 export default function Header({ darkMode, handleMenu }: Props) {
   return (
-    <header className="p-3 absolute top-0 left-0">
+    <header className="p-3 absolute top-0 left-0" style={{ zIndex: "9999" }}>
       <div
         className="flex align-middle"
         onClick={handleMenu}

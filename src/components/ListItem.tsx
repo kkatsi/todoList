@@ -97,10 +97,10 @@ export default function ListItem({
   useEffect(() => {
     if (x === "-100%") {
       setTimeout(() => {
-        onPressLabel();
+        onRemove();
       }, 300);
     }
-  }, [x, onPressLabel]);
+  }, [x, onRemove]);
 
   const handleSubjectChange = useCallback(
     (e) => {
@@ -133,13 +133,13 @@ export default function ListItem({
         drag
         dragElastic={{ top: 0, right: 0, bottom: 0, left: 0.2 }}
         dragMomentum={false}
-        dragConstraints={{ top: 0, right: 30, bottom: 0, left: 0 }}
+        dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
         onDragEnd={(event, info) => handleDragEnd(Math.abs(info.offset.x))}
       >
         <div
           onClick={onToggleItem}
           className="mr-2"
-          style={{ width: "23px", height: "23px" }}
+          style={{ width: "23px", minWidth: "23px", height: "23px" }}
         >
           <Check isDone={isDone} />
         </div>
@@ -160,7 +160,6 @@ export default function ListItem({
               paddingRight: ".3rem",
               lineHeight: "20px",
               fontSize: "1.1rem",
-              minWidth: "300px",
             }}
             onAnimationComplete={() => {
               setAnimationEnded(true);
