@@ -1,16 +1,46 @@
 import React from "react";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
+import styled from "styled-components";
+import tw from "twin.macro";
+import useRandomImage from "../hooks/useRandomImage";
 
 interface Props {
   darkMode: boolean;
   handleMenu: () => void;
+  onFinishLoadingImage: () => void;
 }
 
-export default function Header({ darkMode, handleMenu }: Props) {
+const Image = styled.img`
+  height: 300px;
+  object-fit: cover;
+  object-position: center;
+  ${tw`w-full`}
+`;
+
+const ImageFilter = styled.div`
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 300px;
+  ${tw`absolute top-0 left-0 w-full`}
+`;
+
+export default function Header({
+  darkMode,
+  handleMenu,
+  onFinishLoadingImage,
+}: Props) {
+  const { image, error } = useRandomImage();
+  const fallbackImage = require("../assets/fallback.jpg");
+
   return (
-    <header className="p-3 absolute top-0 left-0" style={{ zIndex: "9999" }}>
+    <header className="absolute top-0 left-0 w-full" style={{ zIndex: "9999" }}>
+      <Image
+        src={!error ? String(image) : fallbackImage}
+        alt="nature"
+        onLoad={onFinishLoadingImage}
+      />
+      <ImageFilter />
       <div
-        className="flex align-middle"
+        className="absolute top-3 left-3 flex align-middle"
         onClick={handleMenu}
         style={{ cursor: "pointer" }}
       >

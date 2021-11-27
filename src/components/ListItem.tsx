@@ -33,7 +33,8 @@ const Background = styled.div`
 `;
 const Content = styled(motion.div)`
   z-index: 1;
-  ${tw`absolute w-full h-full flex items-center px-4 py-2 text-gray-800 dark:text-white`}
+  height: 103%;
+  ${tw`absolute w-full flex items-center px-4 py-2 text-gray-800 dark:text-white`};
 `;
 
 const Input = styled.input`
@@ -129,7 +130,7 @@ export default function ListItem({
         <IoTrashOutline size={20} />
       </Background>
       <Content
-        className={bgColor}
+        className={`${bgColor}`}
         drag
         dragElastic={{ top: 0, right: 0, bottom: 0, left: 0.2 }}
         dragMomentum={false}

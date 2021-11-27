@@ -8,7 +8,8 @@ interface Props {
 export default function PageContent({ children }: Props) {
   return (
     <div
-      className={`py-20 relative mx-auto container min-h-screen flex-col flex justify-center`}
+      style={{ paddingTop: "320px" }}
+      className={`pb-20 mx-auto container min-h-screen flex-col flex`}
     >
       {children}
     </div>

@@ -86,7 +86,7 @@ export function AnimatedTaskItem({
         }}
         transition={{
           type: "spring",
-          stiffness: 100,
+          stiffness: 120,
         }}
         exit={{
           opacity: 0,
