@@ -9,7 +9,7 @@ export default function useImageSearch() {
     setError(false);
     axios({
       method: "GET",
-      url: "https://api.unsplash.com/photos/rando",
+      url: "https://api.unsplash.com/photos/random",
       params: {
         client_id: process.env.REACT_APP_UNSPLASH_ACCESS_KEY,
         topics: "6sMVjTLSkeQ", //nature images only

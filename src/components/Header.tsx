@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
 import styled from "styled-components";
 import tw from "twin.macro";
@@ -12,15 +12,22 @@ interface Props {
 
 const Image = styled.img`
   height: 300px;
+  z-index: -1;
   object-fit: cover;
   object-position: center;
-  ${tw`w-full`}
+  ${tw`w-full absolute top-0 left-0`}
 `;
 
 const ImageFilter = styled.div`
+  z-index: -1;
   background-color: rgba(0, 0, 0, 0.5);
   height: 300px;
   ${tw`absolute top-0 left-0 w-full`}
+`;
+
+const Heading = styled.h1`
+  font-weight: bold;
+  ${tw`text-white p-6 text-3xl`}
 `;
 
 export default function Header({
@@ -29,12 +36,22 @@ export default function Header({
   onFinishLoadingImage,
 }: Props) {
   const { image, error } = useRandomImage();
-  const fallbackImage = require("../assets/fallback.jpg");
+
+  useEffect(() => {
+    if (error) onFinishLoadingImage();
+  }, [error, onFinishLoadingImage]);
 
   return (
-    <header className="absolute top-0 left-0 w-full" style={{ zIndex: "9999" }}>
+    <header
+      className="absolute top-0 left-0 w-full flex items-end "
+      style={{ height: "300px" }}
+    >
       <Image
-        src={!error ? String(image) : fallbackImage}
+        src={
+          !error
+            ? String(image)
+            : String(require("../assets/fallback.jpg").default)
+        }
         alt="nature"
         onLoad={onFinishLoadingImage}
       />
@@ -51,6 +68,7 @@ export default function Header({
         />
         <span className="font-bold dark:text-white text-black">Menu</span>
       </div>
+      <Heading>What's up, Kostas!</Heading>
     </header>
   );
 }
