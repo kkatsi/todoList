@@ -5,16 +5,16 @@ import About from "./pages/About";
 import { Routes, Route } from "react-router-dom";
 import SideBar from "./pages/SideBar";
 import useDarkMode from "./hooks/useDarkMode";
-import Header from "./components/Header";
 import { motion } from "framer-motion";
+import useRandomImage from "./hooks/useRandomImage";
+import Image from "./components/Image";
 
 function App() {
   const [darkMode, setDarkMode] = useDarkMode();
   const [openMenu, setOpenMenu] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [completed, setCompleted] = useState(0);
-  const [uncompleted, setUncompleted] = useState(0);
   const [startingPoint, setStartingPoint] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const { image, error } = useRandomImage();
 
   const bgColorClass = useMemo(() => {
     if (darkMode && openMenu) return "bg-gray-800";
@@ -22,10 +22,6 @@ function App() {
     else if (!darkMode && openMenu) return "bg-gray-100";
     else return "bg-white";
   }, [darkMode, openMenu]);
-
-  const handleFinishLoadingImage = useCallback(() => {
-    setLoading(false);
-  }, []);
 
   interface TaskItemData {
     id: number;
@@ -35,18 +31,18 @@ function App() {
 
   const handleCompletedItems = useCallback((items: TaskItemData[]) => {
     const completed = items.filter((item: TaskItemData) => item.done).length;
-    setCompleted(completed);
+    return completed;
   }, []);
 
   const handleUncompletedItems = useCallback((items: TaskItemData[]) => {
     const uncompleted = items.filter((item: TaskItemData) => !item.done).length;
-    setUncompleted(uncompleted);
+    return uncompleted;
   }, []);
 
   const handleDragEnd = useCallback(
     (info, startingPoint: number) => {
       const endingPoint = info.point.x;
-      const limit = 150;
+      const limit = 10;
       const distanceAbs = Math.abs(endingPoint - startingPoint);
       if (endingPoint > startingPoint && distanceAbs > limit) {
         setOpenMenu(true);
@@ -60,14 +56,14 @@ function App() {
     [setOpenMenu]
   );
 
+  const handleMenuOpening = useCallback(() => {
+    setOpenMenu((prevState) => !prevState);
+  }, []);
+
   return (
     <div style={{ overflowY: "hidden" }}>
       <motion.div
         className={bgColorClass}
-        style={{
-          display: loading ? "none" : "block",
-          // maxHeight: "100vh",
-        }}
         animate={{
           x: openMenu ? "250px" : "0px",
           transition: {
@@ -89,36 +85,40 @@ function App() {
         onDragStart={(e, info) => setStartingPoint(info.point.x)}
         onDragEnd={(e, info) => handleDragEnd(info, startingPoint)}
       >
-        <Header
-          handleMenu={() => setOpenMenu(!openMenu)}
-          completedItems={completed}
-          uncompletedItems={uncompleted}
-          onFinishLoadingImage={handleFinishLoadingImage}
+        <Image
+          image={
+            !error
+              ? String(image)
+              : String(require("./assets/fallback.jpg").default)
+          }
+          error={error}
+          loading={loading}
+          onLoad={() => setLoading(false)}
         />
         <SideBar
           darkMode={darkMode}
           handleMenu={() => setOpenMenu(!openMenu)}
           onModeChange={() => setDarkMode(!darkMode)}
         />
-        {!loading && (
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <MainScreen
-                  darkMode={darkMode}
-                  bgColorClass={bgColorClass}
-                  completedItems={handleCompletedItems}
-                  uncompletedItems={handleUncompletedItems}
-                />
-              }
-            />
-            <Route path="about" element={<About />} />
-          </Routes>
-        )}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <MainScreen
+                onMenuOpening={handleMenuOpening}
+                darkMode={darkMode}
+                bgColorClass={bgColorClass}
+                completedItems={handleCompletedItems}
+                uncompletedItems={handleUncompletedItems}
+              />
+            }
+          />
+          <Route
+            path="about"
+            element={<About onMenuOpening={handleMenuOpening} />}
+          />
+        </Routes>
       </motion.div>
-
-      {loading && <span>Loading </span>}
     </div>
   );
 }

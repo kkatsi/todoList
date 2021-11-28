@@ -3,7 +3,7 @@ import axios from "axios";
 
 export default function useImageSearch() {
   const [error, setError] = useState(false);
-  const [image, setImage] = useState([]);
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     setError(false);
@@ -17,7 +17,7 @@ export default function useImageSearch() {
       },
     })
       .then((res) => {
-        setImage(res.data.urls.regular);
+        setImage(String(res.data.urls.regular));
       })
       .catch((e) => {
         setError(true);

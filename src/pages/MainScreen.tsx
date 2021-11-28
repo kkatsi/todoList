@@ -1,11 +1,13 @@
 import React, { useState, useCallback, useEffect } from "react";
 // import ListItem from "../components/ListItem";
+import Header from "../components/Header";
 import PageContent from "../components/PageContent";
 import TaskList from "../components/TaskList";
 import { AiOutlinePlus } from "react-icons/ai";
 import styled from "styled-components";
 import tw from "twin.macro";
 import useLocalStorage from "../hooks/useLocalStorage";
+import TaskState from "../components/TaskState";
 
 interface TaskItemData {
   id: number;
@@ -16,8 +18,9 @@ interface TaskItemData {
 interface Props {
   darkMode: boolean;
   bgColorClass: string;
-  completedItems: (items: TaskItemData[]) => void;
-  uncompletedItems: (items: TaskItemData[]) => void;
+  completedItems: (items: TaskItemData[]) => number;
+  uncompletedItems: (items: TaskItemData[]) => number;
+  onMenuOpening: () => void;
 }
 
 const AddItemButton = styled.button`
@@ -39,6 +42,7 @@ export default function MainScreen({
   bgColorClass,
   completedItems,
   uncompletedItems,
+  onMenuOpening,
 }: Props) {
   const [editingItemId, setEditingItemId] = useState<number | null>(null);
   const [localStorageData, setLocalStorageData] = useLocalStorage<
@@ -104,40 +108,60 @@ export default function MainScreen({
     [handleRemoveTaskItem]
   );
 
+  const onItemComplete = useCallback(() => {
+    return completedItems(data);
+  }, [completedItems, data]);
+
+  const onItemUncomplete = useCallback(() => {
+    return uncompletedItems(data);
+  }, [uncompletedItems, data]);
+
   useEffect(() => {
     completedItems(data);
     uncompletedItems(data);
   }, [data, completedItems, uncompletedItems]);
 
   return (
-    <PageContent>
-      <br />
-      <br />
-      {data.length > 0 && (
-        <TaskList
-          darkMode={darkMode}
-          bgColorClass={bgColorClass}
-          data={data}
-          onToggleItem={handleToggleTaskItem}
-          onChangeSubject={handleChangeTaskItemSubject}
-          onFinishEditing={handleFinishTaskItemEditing}
-          onPressLabel={handlePressTaskItemLabel}
-          onRemoveItem={handleRemoveTaskItem}
-          editingItemId={editingItemId}
-        />
-      )}
-      {data.length === 0 && (
-        <EmptyListComponent>
-          <EmptyListLabel>
-            There are currently no tasks in your list. You can add a new task by
-            clicking the button at bottom right corner.
-          </EmptyListLabel>
-        </EmptyListComponent>
-      )}
+    <>
+      <Header
+        handleMenu={onMenuOpening}
+        title="What's up, Kostas"
+        tasksComponent={
+          <TaskState
+            completedItems={onItemComplete}
+            uncompletedItems={onItemUncomplete}
+          />
+        }
+      />
+      <PageContent>
+        <br />
+        <br />
+        {data.length > 0 && (
+          <TaskList
+            darkMode={darkMode}
+            bgColorClass={bgColorClass}
+            data={data}
+            onToggleItem={handleToggleTaskItem}
+            onChangeSubject={handleChangeTaskItemSubject}
+            onFinishEditing={handleFinishTaskItemEditing}
+            onPressLabel={handlePressTaskItemLabel}
+            onRemoveItem={handleRemoveTaskItem}
+            editingItemId={editingItemId}
+          />
+        )}
+        {data.length === 0 && (
+          <EmptyListComponent>
+            <EmptyListLabel>
+              There are currently no tasks in your list. You can add a new task
+              by clicking the button at bottom right corner.
+            </EmptyListLabel>
+          </EmptyListComponent>
+        )}
 
-      <AddItemButton onClick={handleAddTaskClick}>
-        <AiOutlinePlus size={25} />
-      </AddItemButton>
-    </PageContent>
+        <AddItemButton onClick={handleAddTaskClick}>
+          <AiOutlinePlus size={25} />
+        </AddItemButton>
+      </PageContent>
+    </>
   );
 }

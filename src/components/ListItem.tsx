@@ -99,7 +99,7 @@ export default function ListItem({
     if (x === "-100%") {
       setTimeout(() => {
         onRemove();
-      }, 300);
+      }, 1000);
     }
   }, [x, onRemove]);
 
@@ -118,7 +118,7 @@ export default function ListItem({
   return (
     <ListItemContainer
       ref={item}
-      animate={{ x: x, opacity: opacity, transition: { duration: 1 } }}
+      animate={{ x: x, opacity: opacity, transition: { duration: 1.5 } }}
       initial={{ x: 0, opacity: 1 }}
       style={{
         width: "100%",

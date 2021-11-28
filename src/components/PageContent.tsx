@@ -1,4 +1,5 @@
 import React from "react";
+import Div100vh from "react-div-100vh";
 
 interface Props {
   //   bgColorClass: string;
@@ -7,11 +8,13 @@ interface Props {
 
 export default function PageContent({ children }: Props) {
   return (
-    <div
-      style={{ paddingTop: "320px" }}
-      className={`pb-20 mx-auto container min-h-screen flex-col flex`}
+    <Div100vh
+      style={{
+        paddingTop: "320px",
+      }}
+      className={`pb-20 mx-auto container flex-col flex`}
     >
       {children}
-    </div>
+    </Div100vh>
   );
 }

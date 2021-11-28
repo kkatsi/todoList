@@ -3,6 +3,7 @@ import tw from "twin.macro";
 import { Link, useMatch, useResolvedPath, LinkProps } from "react-router-dom";
 import { FiInbox, FiInfo } from "react-icons/fi";
 import ThemeToggle from "../components/ThemeToggle";
+import Div100vh from "react-div-100vh";
 
 interface Props {
   handleMenu: () => void;
@@ -10,12 +11,12 @@ interface Props {
   onModeChange: () => void;
 }
 
-const SideBarContainer = styled.nav`
+const SideBarContainer = styled(Div100vh)`
   width: 250px;
   z-index: 100;
   transform: translateX(-250px);
   overflow-y: hidden;
-  ${tw`h-screen dark:bg-dark-blue absolute flex flex-col items-center px-5 py-16`};
+  ${tw`dark:bg-dark-blue absolute flex flex-col items-center px-5 py-16`};
 `;
 
 const Menu = styled.ul`
