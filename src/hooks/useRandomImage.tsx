@@ -13,6 +13,7 @@ export default function useImageSearch() {
       params: {
         client_id: process.env.REACT_APP_UNSPLASH_ACCESS_KEY,
         topics: "6sMVjTLSkeQ", //nature images only
+        orientation: "landscape",
       },
     })
       .then((res) => {

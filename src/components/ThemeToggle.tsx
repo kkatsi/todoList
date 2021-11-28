@@ -14,7 +14,7 @@ const StyledSwitch = styled(SwitchPrimitive.Root)`
     box-shadow: 0 0 0 1px black;
   }
   &[data-state="checked"] {
-    background-color: ${tw`bg-indigo-500`};
+    background-color: ${tw`bg-indigo-700`};
   }
   ${tw`mx-2 bg-gray-400 rounded-full relative shadow-sm`}
 `;
@@ -38,15 +38,15 @@ export default function ThemeToggle({ onModeChange }: Props) {
     onModeChange();
   }, [onModeChange]);
   return (
-    <div className="flex dark:text-gray-100">
-      <span>Light</span>
+    <div className="flex mt-auto dark:text-gray-100">
+      <span>Dark</span>
       <Switch
-        defaultChecked={localStorage.getItem("dark-theme") !== "false" || false}
+        defaultChecked={localStorage.getItem("dark-theme") === "false" || false}
         onCheckedChange={handleModeChange}
       >
         <SwitchThumb />
       </Switch>
-      <span>Dark</span>
+      <span>Light</span>
     </div>
   );
 }

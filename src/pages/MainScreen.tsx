@@ -2,16 +2,22 @@ import React, { useState, useCallback, useEffect } from "react";
 // import ListItem from "../components/ListItem";
 import PageContent from "../components/PageContent";
 import TaskList from "../components/TaskList";
-import ThemeToggle from "../components/ThemeToggle";
 import { AiOutlinePlus } from "react-icons/ai";
 import styled from "styled-components";
 import tw from "twin.macro";
 import useLocalStorage from "../hooks/useLocalStorage";
 
+interface TaskItemData {
+  id: number;
+  subject: string;
+  done: boolean;
+}
+
 interface Props {
   darkMode: boolean;
-  onModeChange: () => void;
   bgColorClass: string;
+  completedItems: (items: TaskItemData[]) => void;
+  uncompletedItems: (items: TaskItemData[]) => void;
 }
 
 const AddItemButton = styled.button`
@@ -28,16 +34,11 @@ const EmptyListLabel = styled.span`
   ${tw`text-gray-400`}
 `;
 
-interface TaskItemData {
-  id: number;
-  subject: string;
-  done: boolean;
-}
-
 export default function MainScreen({
   darkMode,
-  onModeChange,
   bgColorClass,
+  completedItems,
+  uncompletedItems,
 }: Props) {
   const [editingItemId, setEditingItemId] = useState<number | null>(null);
   const [localStorageData, setLocalStorageData] = useLocalStorage<
@@ -103,9 +104,13 @@ export default function MainScreen({
     [handleRemoveTaskItem]
   );
 
+  useEffect(() => {
+    completedItems(data);
+    uncompletedItems(data);
+  }, [data, completedItems, uncompletedItems]);
+
   return (
     <PageContent>
-      <ThemeToggle onModeChange={onModeChange} />
       <br />
       <br />
       {data.length > 0 && (

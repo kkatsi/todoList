@@ -1,5 +1,6 @@
 import React from "react";
+import PageContent from "../components/PageContent";
 
 export default function About() {
-  return <div className="h-screen">About</div>;
+  return <PageContent>About</PageContent>;
 }

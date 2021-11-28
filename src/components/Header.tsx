@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
-import { HiOutlineMenuAlt1 } from "react-icons/hi";
+import { FiMenu } from "react-icons/fi";
 import styled from "styled-components";
 import tw from "twin.macro";
 import useRandomImage from "../hooks/useRandomImage";
 
 interface Props {
-  darkMode: boolean;
   handleMenu: () => void;
+  completedItems: number;
+  uncompletedItems: number;
   onFinishLoadingImage: () => void;
 }
 
@@ -20,19 +21,29 @@ const Image = styled.img`
 
 const ImageFilter = styled.div`
   z-index: -1;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.55);
   height: 300px;
   ${tw`absolute top-0 left-0 w-full`}
 `;
 
 const Heading = styled.h1`
   font-weight: bold;
-  ${tw`text-white p-6 text-3xl`}
+  ${tw`text-white p-6 pb-0 text-3xl`}
+`;
+
+const TasksState = styled.p`
+  ${tw`text-white p-6 pt-0`}
+`;
+
+const ShadowedText = styled.span`
+  text-shadow: 0 0 4px white;
+  ${tw`text-lg`}
 `;
 
 export default function Header({
-  darkMode,
   handleMenu,
+  completedItems,
+  uncompletedItems,
   onFinishLoadingImage,
 }: Props) {
   const { image, error } = useRandomImage();
@@ -43,7 +54,7 @@ export default function Header({
 
   return (
     <header
-      className="absolute top-0 left-0 w-full flex items-end "
+      className="absolute top-0 left-0 w-full flex flex-col justify-end "
       style={{ height: "300px" }}
     >
       <Image
@@ -57,18 +68,18 @@ export default function Header({
       />
       <ImageFilter />
       <div
-        className="absolute top-3 left-3 flex align-middle"
+        className="absolute top-3 left-3 flex items-center"
         onClick={handleMenu}
         style={{ cursor: "pointer" }}
       >
-        <HiOutlineMenuAlt1
-          size={30}
-          color={darkMode ? "white" : "black"}
-          className="mr-2"
-        />
-        <span className="font-bold dark:text-white text-black">Menu</span>
+        <FiMenu size={30} color={"white"} className="mr-2" />
+        <span className="font-bold text-white">Menu</span>
       </div>
       <Heading>What's up, Kostas!</Heading>
+      <TasksState>
+        You have <ShadowedText>{uncompletedItems}</ShadowedText> uncompleted and{" "}
+        <ShadowedText>{completedItems}</ShadowedText> completed Tasks
+      </TasksState>
     </header>
   );
 }

@@ -6,7 +6,7 @@ import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 const StyledCheckbox = styled(CheckboxPrimitive.Root)`
   border: 2px solid;
   &[data-state="checked"] {
-    background-color: ${tw`bg-indigo-500 border-indigo-500`};
+    background-color: ${tw`bg-indigo-700 border-indigo-700`};
   }
   ${tw`w-full h-full bg-white rounded-lg border-black relative flex align-middle justify-center shadow-sm`};
 `;
