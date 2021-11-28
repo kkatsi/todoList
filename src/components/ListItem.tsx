@@ -22,7 +22,7 @@ const StrikeThrought = styled.div`
   ${tw`absolute left-0 h-[1px] w-0 top-1/2 transform -translate-y-1/2 transition-all duration-500`}
 `;
 
-const ListItemContainer = styled.div`
+const ListItemContainer = styled(motion.div)`
   width: 100%;
   height: 40px;
   ${tw`relative`}
@@ -118,12 +118,11 @@ export default function ListItem({
   return (
     <ListItemContainer
       ref={item}
+      animate={{ x: x, opacity: opacity, transition: { duration: 1 } }}
+      initial={{ x: 0, opacity: 1 }}
       style={{
         width: "100%",
         height: "40px",
-        opacity: opacity,
-        transform: `translateX(${x})`,
-        transition: "all 1s",
       }}
     >
       <Background>
@@ -131,9 +130,9 @@ export default function ListItem({
       </Background>
       <Content
         className={`${bgColor}`}
-        drag
+        drag="x"
         dragElastic={{ top: 0, right: 0, bottom: 0, left: 0.2 }}
-        dragMomentum={false}
+        dragMomentum={true}
         dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
         onDragEnd={(event, info) => handleDragEnd(Math.abs(info.offset.x))}
       >
