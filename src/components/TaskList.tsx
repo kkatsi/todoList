@@ -35,9 +35,9 @@ interface TaskItemProps {
 }
 
 const List = styled.div`
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
-  ${tw`flex w-full flex-col items-center justify-start`}
+  ${tw`flex w-full h-full flex-col items-center justify-start`}
 `;
 
 const AnimatedView = styled(motion.div)`
@@ -86,10 +86,16 @@ export function AnimatedTaskItem({
           scale: 1,
           marginBottom: 0,
         }}
-        // transition={{
-        //   type: "spring",
-        //   stiffness: 100,
+        transition={{
+          type: "spring",
+          stiffness: 100,
+        }}
+        // exit={{
+        //   opacity: 0,
+        //   scale: 0.5,
+        //   marginBottom: "-46px",
         // }}
+        // layout
       >
         <ListItem
           dark={darkMode}

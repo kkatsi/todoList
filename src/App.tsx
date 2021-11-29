@@ -42,7 +42,7 @@ function App() {
   const handleDragEnd = useCallback(
     (info, startingPoint: number) => {
       const endingPoint = info.point.x;
-      const limit = 10;
+      const limit = 80;
       const distanceAbs = Math.abs(endingPoint - startingPoint);
       if (endingPoint > startingPoint && distanceAbs > limit) {
         setOpenMenu(true);
@@ -61,7 +61,7 @@ function App() {
   }, []);
 
   return (
-    <div style={{ overflowY: "hidden" }}>
+    <div style={{ overflow: "hidden" }}>
       <motion.div
         className={bgColorClass}
         animate={{

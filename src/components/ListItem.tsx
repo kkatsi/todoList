@@ -68,15 +68,6 @@ export default function ListItem({
 
   const item = useRef<HTMLDivElement | null>(null);
 
-  function handleDragEnd(offset: number) {
-    const limit = 230;
-    if (offset >= limit) {
-      setX("-100%");
-      // setHeight("0px");
-      setOpacity(0);
-    }
-  }
-
   useEffect(() => {
     let timeout: NodeJS.Timeout;
     if (isDone && animationEnded) {
@@ -110,31 +101,43 @@ export default function ListItem({
     [onChangeSubject]
   );
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    onFinishEditing();
-  }
+  const handleDragEnd = useCallback((offset: number) => {
+    const limit = -180;
+    if (offset < 0 && offset <= limit) {
+      setX("-100%");
+      setOpacity(0);
+    }
+  }, []);
+
+  const handleSubmit = useCallback(
+    (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      onFinishEditing();
+    },
+    [onFinishEditing]
+  );
 
   return (
     <ListItemContainer
       ref={item}
-      animate={{ x: x, opacity: opacity, transition: { duration: 1.5 } }}
+      animate={{ x: x, opacity: opacity, transition: { duration: 1 } }}
       initial={{ x: 0, opacity: 1 }}
-      style={{
-        width: "100%",
-        height: "40px",
-      }}
+      // layout
     >
       <Background>
         <IoTrashOutline size={20} />
       </Background>
       <Content
         className={`${bgColor}`}
+        style={{ touchAction: "none" }}
         drag="x"
+        // layout
         dragElastic={{ top: 0, right: 0, bottom: 0, left: 0.2 }}
-        dragMomentum={true}
-        dragConstraints={{ top: 0, right: 0, bottom: 0, left: 0 }}
-        onDragEnd={(event, info) => handleDragEnd(Math.abs(info.offset.x))}
+        dragMomentum={false}
+        dragPropagation
+        dragConstraints={item}
+        whileDrag={{ y: 0 }}
+        onPanEnd={(event, info) => handleDragEnd(info.offset.x)}
       >
         <div
           onClick={onToggleItem}
