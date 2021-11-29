@@ -102,7 +102,7 @@ export default function MainScreen({
 
   const handleFinishTaskItemEditing = useCallback(
     (item) => {
-      if (item.subject === "") handleRemoveTaskItem(item);
+      if (item.subject === "" || !item.subject.trim()) handleRemoveTaskItem(item);
       setEditingItemId(null);
     },
     [handleRemoveTaskItem]
