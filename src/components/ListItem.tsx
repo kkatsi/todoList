@@ -33,8 +33,8 @@ const Background = styled.div`
 `;
 const Content = styled(motion.div)`
   z-index: 1;
-  height: 103%;
-  ${tw`absolute w-full flex items-center px-4 py-2 text-gray-800 dark:text-white`};
+  height: 100%;
+  ${tw`absolute top-0 left-0 w-full flex items-center px-4 py-2 text-gray-800 dark:text-white`};
 `;
 
 const Input = styled.input`
@@ -90,7 +90,7 @@ export default function ListItem({
     if (x === "-100%") {
       setTimeout(() => {
         onRemove();
-      }, 1000);
+      }, 600);
     }
   }, [x, onRemove]);
 
@@ -137,7 +137,7 @@ export default function ListItem({
         dragPropagation
         dragConstraints={item}
         whileDrag={{ y: 0 }}
-        onPanEnd={(event, info) => handleDragEnd(info.offset.x)}
+        onDragEnd={(event, info) => handleDragEnd(info.offset.x)}
       >
         <div
           onClick={onToggleItem}
