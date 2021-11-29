@@ -35,7 +35,9 @@ interface TaskItemProps {
 }
 
 const List = styled.div`
-  ${tw`flex flex-col items-center justify-center`}
+  overflow-y: scroll;
+  overflow-x: hidden;
+  ${tw`flex w-full flex-col items-center justify-start`}
 `;
 
 const AnimatedView = styled(motion.div)`
@@ -84,15 +86,10 @@ export function AnimatedTaskItem({
           scale: 1,
           marginBottom: 0,
         }}
-        transition={{
-          type: "spring",
-          stiffness: 100,
-        }}
-        exit={{
-          opacity: 0,
-          scale: 0.5,
-          marginBottom: "-46px",
-        }}
+        // transition={{
+        //   type: "spring",
+        //   stiffness: 100,
+        // }}
       >
         <ListItem
           dark={darkMode}
@@ -123,7 +120,7 @@ export default function TaskList({
   onRemoveItem,
 }: TaskListProps) {
   return (
-    <List className="w-full">
+    <List>
       {data.map((item) => {
         return (
           <AnimatedTaskItem

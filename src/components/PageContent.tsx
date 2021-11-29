@@ -12,7 +12,7 @@ export default function PageContent({ children }: Props) {
       style={{
         paddingTop: "320px",
       }}
-      className={`pb-20 mx-auto container flex-col flex`}
+      className={`pb-5 mx-auto container flex-col flex`}
     >
       {children}
     </Div100vh>

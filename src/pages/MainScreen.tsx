@@ -134,8 +134,6 @@ export default function MainScreen({
         }
       />
       <PageContent>
-        <br />
-        <br />
         {data.length > 0 && (
           <TaskList
             darkMode={darkMode}

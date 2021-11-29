@@ -7,6 +7,21 @@ body {
   overflow-x: hidden;
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
 @keyframes draw {
   to {
     stroke-dashoffset: 0;
