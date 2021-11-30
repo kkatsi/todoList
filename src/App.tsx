@@ -18,9 +18,9 @@ function App() {
 
   const bgColorClass = useMemo(() => {
     if (darkMode && openMenu) return "bg-gray-800";
-    else if (darkMode && !openMenu) return "bg-gray-900";
-    else if (!darkMode && openMenu) return "bg-gray-100";
-    else return "bg-white";
+    if (darkMode && !openMenu) return "bg-gray-900";
+    if (!darkMode && openMenu) return "bg-gray-100";
+    return "bg-white";
   }, [darkMode, openMenu]);
 
   interface TaskItemData {
