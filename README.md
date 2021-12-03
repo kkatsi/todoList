@@ -15,3 +15,12 @@ The app is live [here](https://animated-todo.netlify.app/)!
 - [Axios](https://github.com/axios/axios) to fetch data from unsplash API.
 
 ## Achived Functionality
+- Add/Edit Task.
+- Delete Task swiping left holding the task item.
+- Localstorage to save task list.
+- Mark todo as completed with a beatiful animation and strikethrough.
+- Dark mode, using tailwindCSS darkmode and localstorage.
+- Mobile like menu, opening bu swiping right , and closing by swiping left.
+- Fetching a random photo from Unsplash API and display it in the header.
+
+
