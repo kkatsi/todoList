@@ -10,6 +10,7 @@ The app is live [here](https://animated-todo.netlify.app/)!
 - [TailwindCSS](https://tailwindcss.com/) for all styles colors and sizes.
 - [Styled Components](https://styled-components.com/) for custom components.
 - [Macro Twin](https://github.com/ben-rogerson/twin.macro) to combine both tailwindCSS and Styled Components.
+- [Radix UI Components](https://www.radix-ui.com/) completely unstyled and full accessible components.
 - [React Icons](https://react-icons.github.io/react-icons/) for menu icons.
 - [Unsplash API](https://unsplash.com/developers) for a random nature photo in the header.
 - [Axios](https://github.com/axios/axios) to fetch data from unsplash API.
